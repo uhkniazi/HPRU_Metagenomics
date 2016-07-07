@@ -26,12 +26,16 @@ getPosterior = function(alpha, n=1000){
 }
 
 # bar plot with error bars
-plot.bar = function(mDat){
+plot.bar = function(mDat, title='Abundance'){
   # get the median to plot
+  p.old = par(mar=c(6,3,2,2)+0.1)
   mBar = apply(mDat, 2, mean)
   names(mBar) = colnames(mDat)
   yl = max(apply(mDat, 2, quantile, 0.98))
-  l = barplot(mBar, beside=T, las=2, ylim=c(0, yl))
+  l = barplot(mBar, beside=T, xaxt='n', ylim=c(0, yl), main=title)
+  axis(side = 1, l[,1], labels=F)
+  text(l[,1], y=par()$usr[3]-0.1*(par()$usr[4]-par()$usr[3]),
+       labels=names(mBar), srt=45, adj=1, xpd=TRUE, cex=0.6)
   ## draw error bars
   f_barplot_errorbars = function(x.loc, y.loc){
     segments(x.loc, y.loc[1], x.loc, y.loc[2])
@@ -39,7 +43,7 @@ plot.bar = function(mDat){
     segments(x.loc-0.1, y.loc[2], x.loc+0.1, y.loc[2])
   }
   sapply(seq_along(1:ncol(mDat)), function(x) f_barplot_errorbars(l[x,1], quantile(mDat[,x], c(0.025, 0.975))))
-  return(mDat)
+  par(p.old)
 }
 
 ######################################
@@ -64,6 +68,6 @@ cvTop = names(sort(iAve[groups == '20'], decreasing = T))
 ## plot the top 20 samples
 mPlot = mDir.post[,cvTop[1:20]]
 
-plot.bar(mPlot)
+plot.bar(mPlot, title = 'test')
 
 head
