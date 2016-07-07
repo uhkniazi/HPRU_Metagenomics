@@ -1,0 +1,69 @@
+# File: megan_csv_import.R
+# Auth: u.niazi@imperial.ac.uk
+# Date: 07/07/2016
+# Desc: import data from megan csv output
+
+
+if(!require(LearnBayes)) stop('R Package LearnBayes required')
+## internal functions
+# get alpha values for dirichlet posterior, using jeffery's non-informative prior
+getAlpha = function(df, prior=1/2){
+  seq = df$V2
+  names(seq) = df$V1
+  # remove the root node
+  i = which(names(seq) == 'root')
+  seq = seq[-i]
+  alpha = seq + prior
+  return(alpha)
+}
+
+# get posterior theta from posterior dirichlet
+getPosterior = function(alpha, n=1000){
+  p = rdirichlet(n, alpha)
+  colnames(p) = names(alpha)
+  #m = colMeans(p)
+  return(p)
+}
+
+# bar plot with error bars
+plot.bar = function(mDat){
+  # get the median to plot
+  mBar = apply(mDat, 2, mean)
+  names(mBar) = colnames(mDat)
+  yl = max(apply(mDat, 2, quantile, 0.98))
+  l = barplot(mBar, beside=T, las=2, ylim=c(0, yl))
+  ## draw error bars
+  f_barplot_errorbars = function(x.loc, y.loc){
+    segments(x.loc, y.loc[1], x.loc, y.loc[2])
+    segments(x.loc-0.1, y.loc[1], x.loc+0.1, y.loc[1])
+    segments(x.loc-0.1, y.loc[2], x.loc+0.1, y.loc[2])
+  }
+  sapply(seq_along(1:ncol(mDat)), function(x) f_barplot_errorbars(l[x,1], quantile(mDat[,x], c(0.025, 0.975))))
+  return(mDat)
+}
+
+######################################
+## data import
+dfData = read.csv(file.choose(), stringsAsFactors = F, header=F)
+
+ivAlpha = getAlpha(dfData)
+mDir.post = getPosterior(ivAlpha)
+
+## get the average vector and plot
+iAve = colMeans(mDir.post)
+head(iAve)
+
+# break into groups
+groups = cut(iAve, breaks = quantile(iAve, 0:20/20), include.lowest = T, labels = 1:20)
+
+plot(sort(iAve[groups == '20']), type='l', main='Top 5% Abundant Samples',
+     xlab='Samples', ylab='Proportion')
+
+cvTop = names(sort(iAve[groups == '20'], decreasing = T))
+
+## plot the top 20 samples
+mPlot = mDir.post[,cvTop[1:20]]
+
+plot.bar(mPlot)
+
+head
