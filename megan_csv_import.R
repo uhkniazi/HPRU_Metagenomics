@@ -60,14 +60,13 @@ head(iAve)
 # break into groups
 groups = cut(iAve, breaks = quantile(iAve, 0:20/20), include.lowest = T, labels = 1:20)
 
-plot(sort(iAve[groups == '20']), type='l', main='Top 5% Abundant Samples',
-     xlab='Samples', ylab='Proportion')
+plot(sort(iAve[groups == '20']), type='l', main='Top 5% Abundant Taxa',
+     xlab='Taxa', ylab='Proportion')
 
 cvTop = names(sort(iAve[groups == '20'], decreasing = T))
 
 ## plot the top 20 samples
 mPlot = mDir.post[,cvTop[1:20]]
-
-plot.bar(mPlot, title = 'test')
+plot.bar(mPlot, title = 'graham settings')
 
 head
