@@ -24,7 +24,7 @@ nohup ./diamond makedb --in /Capmeta/home/Downloads/blastdb/nr.fa -d nr &
 ```
   
 ## 2- MEGAN
-[From the MEGAN webpage](http://ab.inf.uni-tuebingen.de/software/megan6/)MEGAN6 is a comprehensive toolbox for interactively analyzing microbiome data. All the interactive tools you need in one ...
+[From the MEGAN webpage](http://ab.inf.uni-tuebingen.de/software/megan6/) MEGAN6 is a comprehensive toolbox for interactively analyzing microbiome data. All the interactive tools you need in one ...
 
 **Please Note** this pipeline was tested with MEGAN5, so you can apply the same steps to MEGAN6, assuming it all works.
 #### Download and Installation
@@ -41,4 +41,25 @@ Download the database using
 ```
 wget http://www-ab.informatik.uni-tuebingen.de/data/software/megan5/download/gi_taxid-March2015X.zip
 unzip gi_taxid-March2015X.zip
+```
+# Running the pipeline
+The starting point is a FASTQ file from the sequencing run while the output
+file at the end will be a count table produced by MEGAN.
+
+*FASTQ File* --> **Diamond Blast** --> *.daa file* --> **Diamond Blast**
+--> *.m8 blast format file* --> **MEGAN** --> *.rma file* --> **MEGAN**
+--> *.txt count table* --> **Statistical Analysis**
+
+## Running Diamond Blast
+This is the most time consuming task and resource hungry task in the pipeline.
+The script below is an example of how to run two samples through Diamond Blast.
+```
+# script to run diamond blast on several files
+# these are the names of the .fastq files in the input directory
+BM_samples="003_S1_L001_R1_001 003_S1_L001_R2_001"
+
+for s in ${BM_samples}
+do
+    ./diamond blastx -d nr -q input/${s}.fastq -a BM_${s} -t temp/
+done
 ```
