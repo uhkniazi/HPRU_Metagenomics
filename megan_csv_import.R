@@ -51,6 +51,10 @@ plot.bar = function(mDat, title='Abundance'){
 dfData = read.csv(file.choose(), stringsAsFactors = F, header=F)
 
 ivAlpha = getAlpha(dfData)
+# removed unassigned
+i = which(names(ivAlpha) == 'Not assigned')
+ivAlpha = ivAlpha[-i]
+# simulate dirichlet posterior sample
 mDir.post = getPosterior(ivAlpha)
 
 ## get the average vector and plot
@@ -67,6 +71,6 @@ cvTop = names(sort(iAve[groups == '20'], decreasing = T))
 
 ## plot the top 20 samples
 mPlot = mDir.post[,cvTop[1:20]]
-plot.bar(mPlot, title = 'graham settings')
+plot.bar(mPlot, title = 'Sample 004_S1')
 
-head
+pie(colMeans(mPlot), cex=0.5, radius=1, angle=45)
