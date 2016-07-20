@@ -12,7 +12,8 @@ getAlpha = function(df, prior=1/2){
   names(seq) = df$V1
   # remove the root node
   i = which(names(seq) == 'root')
-  seq = seq[-i]
+  # check if i is empty
+  if (length(i) != 0) {seq = seq[-i]}
   alpha = seq + prior
   return(alpha)
 }
@@ -51,9 +52,6 @@ plot.bar = function(mDat, title='Abundance'){
 dfData = read.csv(file.choose(), stringsAsFactors = F, header=F)
 
 ivAlpha = getAlpha(dfData)
-# removed unassigned
-i = which(names(ivAlpha) == 'Not assigned')
-ivAlpha = ivAlpha[-i]
 # simulate dirichlet posterior sample
 mDir.post = getPosterior(ivAlpha)
 
@@ -62,15 +60,25 @@ iAve = colMeans(mDir.post)
 head(iAve)
 
 # break into groups
-groups = cut(iAve, breaks = quantile(iAve, 0:20/20), include.lowest = T, labels = 1:20)
+groups = cut(iAve, breaks = quantile(iAve, 0:10/10), include.lowest = T, labels = 1:10)
 
-plot(sort(iAve[groups == '20']), type='l', main='Top 5% Abundant Taxa',
+plot(sort(iAve[groups == '10']), type='l', main='Top 10% Abundant Taxa',
      xlab='Taxa', ylab='Proportion')
 
-cvTop = names(sort(iAve[groups == '20'], decreasing = T))
+cvTop = names(sort(iAve[groups == '10'], decreasing = T))
 
-## plot the top 20 samples
-mPlot = mDir.post[,cvTop[1:20]]
-plot.bar(mPlot, title = 'Sample 004_S1')
+## plot the top 10% taxa
+mPlot = mDir.post[,cvTop]
+plot.bar(mPlot, title = 'Top 10% Sample 3')
+
+pie(colMeans(mPlot), cex=0.7, radius=1, angle=45)
+
+## plot top 30% the taxa
+cvTop = names(sort(iAve[groups %in% c('8', '9', '10')], decreasing = T))
+
+## plot the top 30% taxa
+mPlot = mDir.post[,cvTop]
+plot.bar(mPlot, title = 'Top 30% Sample 3')
 
 pie(colMeans(mPlot), cex=0.5, radius=1, angle=45)
+
