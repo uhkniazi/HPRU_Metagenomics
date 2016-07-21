@@ -185,38 +185,26 @@ The above command will produce 2 sets of 5 plots, one for S3.rma.txt and second 
 ## megan_csv_import.R
 This script will is run interactively, and is very similar to the previous script. The details of individual functions used in both scripts is described below:
 
-
 ### Functions used by script.
 #### getAlpha
-**ARGS**
-
-**df** data.frame with 2 columns where column 2 (V2) contains the count data, and V1 the name of the species/taxa
-
-
-**prior=1/2** Jeffery's non-informative prior for dirichlet distribution.
-
-The function will remove the root node and return the alpha parameter for the dirichlet distribution.
-
-**RETS** named vector
+**ARGS**  
+**df:** data.frame with 2 columns where column 2 (V2) contains the count data, and V1 the name of the species/taxa  
+**prior=1/2:** Jeffery's non-informative prior for dirichlet distribution.  
+The function will remove the root node and return the alpha parameter for the dirichlet distribution.  
+**RETS** named integer vector
 
 #### getPosterior
-**ARGS**
-
-**alpha** value of alpha for dirichlet distribution.
-
-**n=1000** number of random samples to simulate from dirichlet distribution.
-
-The function will simulate **n** samples from dirichlet posterior, using the value of **alpha** generated from **getAlpha** function.
-
+**ARGS**  
+**alpha:** value of alpha for dirichlet distribution.  
+**n=1000:** number of random samples to simulate from dirichlet distribution.  
+The function will simulate **n** samples from dirichlet posterior, using the value of **alpha** generated from **getAlpha** function.  
 **RETS** matrix
 
 #### plot.bar
-
 Simple function to plot a bar plot with 95% confidence interval error bars.
 
 ### Script Logic
-1- Load the 2 column csv file produced by MEGAN.
-
+1- Load the 2 column csv file produced by MEGAN.  
 2- Get the alpha for the posterior dirichlet, by using a non-informative dirichlet prior and a multinomial sampling model.  
 3- Removed the group 'Not assgined' *feel free to comment out this line**.
 
