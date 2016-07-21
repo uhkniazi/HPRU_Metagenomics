@@ -57,7 +57,7 @@ plot.bar = function(mDat, title='Abundance'){
 sapply(args, function(x){
   # check if file exists
   if (!file.exists(x)) {
-    stop(cat(paste('file', x, 'not found')))
+    stop(cat(paste('file', x, 'not found\n')))
   }
   # load the file
   dfData = read.csv(x, stringsAsFactors = F, header=F)

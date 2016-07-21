@@ -105,7 +105,18 @@ import blastFile='diamond/BM_003_S1_L001_R1_001.m8' meganFile='output/BM_003_S1_
 quit;
 
 ```
-Once the output file is produced, the count table can be produced using a second command file e.g. *export_commands.txt*:
+Once the output file is produced, the count table can be produced using a second command file. **However for a cleaner picture of organism abundance it is recommended to cut the tree at *species level* and export the *summarized counts*.**  e.g. *export_commands_species.txt*:  
+  
+```
+open file='output/S4.rma';
+collapse rank='Species';
+select rank='Species';
+export what=CSV format=taxonname_count separator=comma counts=summarized file='output/S4.rma.txt'
+;
+quit;
+```
+
+If all the counts from the **root node** are required then use the following script e.g. *export_commands.txt*:
 ```
 open file='output/BM_003_S1_L001_R1_001.rma';
 unCollapse nodes=all;
@@ -134,7 +145,20 @@ The input parameters for the *commands.txt, export_commands.txt* can be changed.
 in the terminal - then copy and paste these commands in the respective command file.
 
 # Results Analysis
-Once the csv count file is produced by MEGAN, this file can be imported into the utility R script *megan_csv_import.R*.
+Once the csv count file is produced by MEGAN, this file can be analyzed in **R**:  
+
+1- *megan_multi_plots.R*  
+2- *megan_csv_import.R*  
+
+## megan_multi_plots.R
+This script will run from the commandline and take 2 column csv file, produced by MEGAN using the script *export_commands_species.txt* or *export_commands.txt*.
+It can take multiple input files, and will produce 5 output png plots in the same folder as the input file/s.  
+
+```
+Rscript megan_multi_plots.R Data_external2/S3.rma.txt Data_external2/S4.rma.txt
+```
+  
+The above command will produce 2 sets of 5 plots, one for S3.rma.txt and second for S4.rma.txt. 
 
 ## megan_csv_import.R
 This script will is run interactively, but can be easily modified to take arguments from the command line.
@@ -143,7 +167,7 @@ This script will is run interactively, but can be easily modified to take argume
 #### getAlpha
 **ARGS**
 
-**df** data.frame with 2 columns where column 2 (V2) contains the count data
+**df** data.frame with 2 columns where column 2 (V2) contains the count data, and V1 the name of the species/taxa
 
 
 **prior=1/2** Jeffery's non-informative prior for dirichlet distribution.
