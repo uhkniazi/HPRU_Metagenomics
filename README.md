@@ -160,8 +160,15 @@ Rscript megan_multi_plots.R Data_external2/S3.rma.txt Data_external2/S4.rma.txt
   
 The above command will produce 2 sets of 5 plots, one for S3.rma.txt and second for S4.rma.txt. 
 
-Inline-style: 
-![alt text](https://github.com/uhkniazi/HPRU_Metagenomics/blob/master/Images/S3.rma.txt1.png "Top 10% of Abundant Taxa")
+
+![alt text](https://github.com/uhkniazi/HPRU_Metagenomics/blob/master/Images/S3.rma.txt1.png "Top 10% of Abundant Taxa")  
+**Figure 1** shows the proportion of reads/counts assigned by MEGAN to the top 10% taxa.  
+
+![alt text](https://github.com/uhkniazi/HPRU_Metagenomics/blob/master/Images/S3.rma.txt2.png "Bar plot of top 10% Abundant Taxa")  
+**Figure 2** shows the proportion of reads/counts assigned by MEGAN to the top 10% taxa in a Bar plot.  
+
+
+
 
 
 ## megan_csv_import.R
@@ -208,12 +215,12 @@ dfData = read.csv(file.choose(), stringsAsFactors = F, header=F)
 
 ivAlpha = getAlpha(dfData)
 # removed unassigned
-i = which(names(ivAlpha) == 'Not assigned')
-ivAlpha = ivAlpha[-i]
+# i = which(names(ivAlpha) == 'Not assigned')
+# ivAlpha = ivAlpha[-i]
 ```
 4- Simulate sample from dirichlet posterior to calculate confidence intervals.  
 5- Get the mean (average) proportion for each taxa.  
-6- Group this vector into 20 groups based on quantiles. Group 20 is the top 5% quantile, with perhaps the most interesting taxa.
+6- Group this vector into 10 groups based on quantiles. Group 10 is the top 10% quantile, with perhaps the most interesting taxa.
 
 
 ```R
@@ -221,17 +228,17 @@ iAve = colMeans(mDir.post)
 head(iAve)
 
 # break into groups
-groups = cut(iAve, breaks = quantile(iAve, 0:20/20), include.lowest = T, labels = 1:20)
+groups = cut(iAve, breaks = quantile(iAve, 0:10/10), include.lowest = T, labels = 1:10)
 
-plot(sort(iAve[groups == '20']), type='l', main='Top 5% Abundant Taxa',
+plot(sort(iAve[groups == '10']), type='l', main='Top 10% Abundant Taxa',
      xlab='Taxa', ylab='Proportion')
 ```
-7- Make a bar plot of the top 20 most abundant taxa from group 20.  
+7- Make a bar plot of the top 10% most abundant taxa.  
 ```R
-cvTop = names(sort(iAve[groups == '20'], decreasing = T))
+cvTop = names(sort(iAve[groups == '10'], decreasing = T))
 
-## plot the top 20 samples
-mPlot = mDir.post[,cvTop[1:20]]
+## plot the top 10% samples
+mPlot = mDir.post[,cvTop]
 plot.bar(mPlot, title = 'Sample 004_S1')
 ```
 
