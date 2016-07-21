@@ -150,6 +150,11 @@ Once the csv count file is produced by MEGAN, this file can be analyzed in **R**
 1- *megan_multi_plots.R*  
 2- *megan_csv_import.R*  
 
+**Note** both these script require the R package LearnBayes, to simulate from the dirichlet distribution. It should be installed within R using  
+```R
+install.packages("LearnBayes")
+```
+
 ## megan_multi_plots.R
 This script will run from the commandline and take 2 column csv file, produced by MEGAN using the script *export_commands_species.txt* or *export_commands.txt*.
 It can take multiple input files, and will produce 5 output png plots in the same folder as the input file/s.  
@@ -167,12 +172,19 @@ The above command will produce 2 sets of 5 plots, one for S3.rma.txt and second 
 ![alt text](https://github.com/uhkniazi/HPRU_Metagenomics/blob/master/Images/S3.rma.txt2.png "Bar plot of top 10% Abundant Taxa")  
 **Figure 2** shows the proportion of reads/counts assigned by MEGAN to the top 10% taxa in a Bar plot.  
 
+![alt text](https://github.com/uhkniazi/HPRU_Metagenomics/blob/master/Images/S3.rma.txt3.png "Pie chart of top 10% Abundant Taxa")  
+**Figure 3** shows the proportion of reads/counts assigned by MEGAN to the top 10% taxa in a Pie chart.   
 
+![alt text](https://github.com/uhkniazi/HPRU_Metagenomics/blob/master/Images/S3.rma.txt4.png "Bar plot of top 30% Abundant Taxa")  
+**Figure 4** shows the proportion of reads/counts assigned by MEGAN to the top 30% taxa in a Bar plot.  
+  
 
+**Figure 5** (not shown) is a Pie chart representation of the same data from Figure 4.
 
 
 ## megan_csv_import.R
-This script will is run interactively, but can be easily modified to take arguments from the command line.
+This script will is run interactively, and is very similar to the previous script. The details of individual functions used in both scripts is described below:
+
 
 ### Functions used by script.
 #### getAlpha
