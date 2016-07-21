@@ -175,11 +175,7 @@ The above command will produce 2 sets of 5 plots, one for S3.rma.txt and second 
 ![alt text](https://github.com/uhkniazi/HPRU_Metagenomics/blob/master/Images/S3.rma.txt3.png "Pie chart of top 10% Abundant Taxa")  
 **Figure 3** shows the proportion of reads/counts assigned by MEGAN to the top 10% taxa in a Pie chart.   
 
-<<<<<<< HEAD
 ![alt text](https://github.com/uhkniazi/HPRU_Metagenomics/blob/master/Images/S3.rma.txt4.png "Bar plot of top 30% Abundant Taxa")  
-=======
-![alt text](https://github.com/uhkniazi/HPRU_Metagenomics/blob/master/Images/S3.rma.txt4.png "Bar plot of top 30% Abundant Taxa")
->>>>>>> 14f9c3bce696a3bd04f1ec87da20ad5a7882c667
 **Figure 4** shows the proportion of reads/counts assigned by MEGAN to the top 30% taxa in a Bar plot.  
   
 
