@@ -153,6 +153,11 @@ Once the csv count file is produced by MEGAN, this file can be analyzed in **R**
 **Note** both these script require the R package LearnBayes, to simulate from the dirichlet distribution. It should be installed within R using  
 ```R
 install.packages("LearnBayes")
+```  
+In case this command fails, this could be due to not setting proxy settings, so enter the following commands in R first:  
+```R
+Sys.setenv(https_proxy='https_proxy=https://XXX.XXX.XXX.XX:Port/')
+install.packages("LearnBayes")
 ```
 
 ## megan_multi_plots.R
