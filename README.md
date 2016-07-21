@@ -254,3 +254,37 @@ mPlot = mDir.post[,cvTop]
 plot.bar(mPlot, title = 'Sample 004_S1')
 ```
 
+------------------------
+# Metaphlan2
+
+MetaPhlAn2 is a tool for profiling the composition of microbial communities from metagenomic shotgun sequencing data. In our tests, this tool is very fast for a quick analysis for the sample, however a more detailed approach using the pipeline mentioned earlier is recommended.
+
+
+[Metaphlan2 tutorial](https://bitbucket.org/biobakery/metaphlan2)
+
+## Installation
+[Install](https://bitbucket.org/biobakery/metaphlan2#markdown-header-installation)
+
+## Running
+[Running](https://bitbucket.org/biobakery/metaphlan2#markdown-header-basic-usage)
+```
+# script to run metaphlan2 pipeline
+# set environment variables
+export PATH=`pwd`:$PATH
+export mpa_dir=`pwd`
+
+# two fastq files from samples
+BM_samples="1467126010_clean 1467126010_cont"
+
+for s in ${BM_samples}
+do
+    ./metaphlan2.py input/${s}.fq --bt2_ps very-sensitive-local --input_type multifastq --bowtie2out BM_${s}.bt2out > profiled_samples/BM_${s}.txt
+done
+
+# merge results tables the tables
+utils/merge_metaphlan_tables.py profiled_samples/*.txt > output/merged_abundance_table.txt
+
+# plot the results in a heatmap
+python utils/hclust2.py -i output/merged_abundance_table.txt -o output_images/abundance_heatmap.png --skip_rows 1 --ftop 25 --f_dist_f braycurtis --s_dist_f braycurtis --cell_aspect_ratio .5 -l
+--flabel_size 6 --legend_file HMP.log_scale.legend.png --max_flabel_len 200 --max_slabel_len 100  --slabel_size 6 --minv 0.1 --dpi 300
+```
