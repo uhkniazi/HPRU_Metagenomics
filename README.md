@@ -160,6 +160,10 @@ Rscript megan_multi_plots.R Data_external2/S3.rma.txt Data_external2/S4.rma.txt
   
 The above command will produce 2 sets of 5 plots, one for S3.rma.txt and second for S4.rma.txt. 
 
+Inline-style: 
+![alt text](https://github.com/uhkniazi/HPRU_Metagenomics/blob/master/Images/S3.rma.txt1.png "Top 10% of Abundant Taxa")
+
+
 ## megan_csv_import.R
 This script will is run interactively, but can be easily modified to take arguments from the command line.
 
